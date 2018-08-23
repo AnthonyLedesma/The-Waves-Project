@@ -43,12 +43,12 @@ class Login extends Component {
         }
     }
 
-    submitForm(){
+    submitForm() {
 
     }
 
-    updateForm(element){
-        const newFormdata = update(element,this.state.formdata, 'login');
+    updateForm(element) {
+        const newFormdata = update(element, this.state.formdata, 'login');
         this.setState({
             formError: false,
             formdata: newFormdata
@@ -64,14 +64,20 @@ class Login extends Component {
                     <FormField
                         id={'email'}
                         formdata={this.state.formdata.email}
-                        change={(element)=> this.updateForm(element)}
+                        change={(element) => this.updateForm(element)}
                     />
 
                     <FormField
                         id={'password'}
                         formdata={this.state.formdata.password}
-                        change={(element)=> this.updateForm(element)}
+                        change={(element) => this.updateForm(element)}
                     />
+
+                    {this.state.formError ?
+                        <div className="error_label">
+                            Please check your data
+                        </div>
+                        : null}
 
                 </form>
 
