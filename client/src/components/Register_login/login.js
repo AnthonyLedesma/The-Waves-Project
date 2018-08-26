@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FormField from '../utils/forms/formFields';
-import { update } from '../utils/forms/formActions';
+import { update, generateData, isFormValid, autofilledForm } from '../utils/forms/formActions';
 
 class Login extends Component {
 
@@ -40,12 +40,36 @@ class Login extends Component {
                 touched: false,
                 validationMessage: '',
             }
-        }
+        },
+        emailElement: {},
+        passElement: {}
     }
 
-    submitForm() {
-
+    submitForm = (event) => {
+        event.preventDefault();
+        this.refreshForm();// this method will handle browser autofill
     }
+
+    refreshForm() {
+        const newFormdata = autofilledForm(this.state.formdata);
+        this.setState({
+            formError: false,
+            formdata: newFormdata
+        }, function () {
+            let dataToSubmit = generateData(this.state, 'login');
+            let formIsValid = isFormValid(this.state.formdata);
+
+            if (formIsValid) {
+                console.log(dataToSubmit);
+            } else {
+                this.setState({
+                    formError: true,
+                })
+            }
+        })
+    };
+
+
 
     updateForm(element) {
         const newFormdata = update(element, this.state.formdata, 'login');
@@ -56,6 +80,21 @@ class Login extends Component {
 
     }
 
+    emailElement = (element) => {
+        this.setState({
+            emailElement: element.event.target
+        })
+        this.updateForm(element);
+    }
+
+    passElement = (element) => {
+
+        this.setState({
+            passElement: element.event.target
+        })
+        this.updateForm(element);
+    }
+
     render() {
         return (
             <div className="signin_wrapper">
@@ -64,13 +103,13 @@ class Login extends Component {
                     <FormField
                         id={'email'}
                         formdata={this.state.formdata.email}
-                        change={(element) => this.updateForm(element)}
+                        change={(element) => this.emailElement(element)}
                     />
 
                     <FormField
                         id={'password'}
                         formdata={this.state.formdata.password}
-                        change={(element) => this.updateForm(element)}
+                        change={(element) => this.passElement(element)}
                     />
 
                     {this.state.formError ?
@@ -78,6 +117,7 @@ class Login extends Component {
                             Please check your data
                         </div>
                         : null}
+                    <button onClick={(event) => this.submitForm(event)}>Log in</button>
 
                 </form>
 
@@ -85,5 +125,6 @@ class Login extends Component {
         );
     }
 }
+
 
 export default connect()(Login);

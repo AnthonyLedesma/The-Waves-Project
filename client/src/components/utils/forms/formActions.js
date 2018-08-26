@@ -1,7 +1,6 @@
 
 export const validate = (element, formdata=[] ) => {
     let error = [true,''];
-
     if(element.validation.email){
         // eslint-disable-next-line
        const regularExp = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -9,6 +8,7 @@ export const validate = (element, formdata=[] ) => {
        const message = `${!valid ? 'Must be a valid email' : ''}`;
        error = !valid ? [valid,message] : error;
    }
+   
 
     if(element.validation.required){
         const valid = element.value.trim() !== '';
@@ -16,9 +16,31 @@ export const validate = (element, formdata=[] ) => {
         error = !valid ? [valid,message] : error;
 
     }
-    
     return error
 
+}
+
+export const autofilledForm = (formdata) => {
+    const newFormdata = {...formdata};
+    
+    const newEmailElement = {
+        ...newFormdata['email']
+    }
+    const newPassElement = {
+        ...newFormdata['password']
+    }
+
+    if(validate(newEmailElement, formdata)){
+        newEmailElement.valid = true;
+    }
+    if(validate(newPassElement, formdata)){
+        newPassElement.valid = true;
+    }
+
+    newFormdata['email'] = newEmailElement;
+    newFormdata['password'] = newPassElement;
+
+    return newFormdata;
 }
 
 export const update = ( element, formdata, formName ) => {
@@ -39,4 +61,21 @@ export const update = ( element, formdata, formName ) => {
     newFormdata[element.id] = newElement;
 
     return newFormdata;
+}
+
+
+export const generateData = (formdata, formName) => {
+    let dataToSubmit = {};
+    for(let key in formdata){
+        dataToSubmit[key] = formdata[key];
+    }
+    return dataToSubmit;
+}
+
+export const isFormValid = (formdata) => {
+    let formIsValid = true;
+    for(let key in formdata){
+        formIsValid = formdata[key].valid && formIsValid;
+    }
+    return formIsValid;
 }
