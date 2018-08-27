@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import FormField from '../utils/forms/formFields';
-import { update, generateData, isFormValid, autofilledForm } from '../utils/forms/formActions';
+import { update, generateData, isFormValid } from '../utils/forms/formActions';
+import { withRouter } from 'react-router-dom';
+
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions/user_actions';
 
 class Login extends Component {
 
@@ -19,11 +22,11 @@ class Login extends Component {
                 },
                 validation: {
                     required: true,
-                    email: true,
+                    email: true
                 },
                 valid: false,
                 touched: false,
-                validationMessage: '',
+                validationMessage: ''
             },
             password: {
                 element: 'input',
@@ -34,66 +37,51 @@ class Login extends Component {
                     placeholder: 'Enter your password'
                 },
                 validation: {
-                    required: true,
+                    required: true
                 },
                 valid: false,
                 touched: false,
-                validationMessage: '',
+                validationMessage: ''
             }
         },
-        emailElement: {},
-        passElement: {}
     }
 
-    submitForm = (event) => {
-        event.preventDefault();
-        this.refreshForm();// this method will handle browser autofill
-    }
-
-    refreshForm() {
-        const newFormdata = autofilledForm(this.state.formdata);
-        this.setState({
-            formError: false,
-            formdata: newFormdata
-        }, function () {
-            let dataToSubmit = generateData(this.state, 'login');
-            let formIsValid = isFormValid(this.state.formdata);
-
-            if (formIsValid) {
-                console.log(dataToSubmit);
-            } else {
-                this.setState({
-                    formError: true,
-                })
-            }
-        })
-    };
-
-
-
-    updateForm(element) {
+    updateForm = (element) => {
         const newFormdata = update(element, this.state.formdata, 'login');
         this.setState({
             formError: false,
             formdata: newFormdata
         })
+    }
+
+
+    submitForm = (event) => {
+        event.preventDefault();
+
+        let dataToSubmit = generateData(this.state.formdata, 'login');
+        let formIsValid = isFormValid(this.state.formdata, 'login')
+
+        if (formIsValid) {
+            this.props.dispatch(loginUser(dataToSubmit)).then(response =>{
+                if(response.payload.loginSuccess){
+                    console.log(response.payload);
+                    this.props.history.push('/user/dashboard')
+                }else{
+                    this.setState({
+                        formError: true
+                    })
+                }
+            });
+            console.log(dataToSubmit);
+        } else {
+            this.setState({
+                formError: true
+            })
+        }
+
 
     }
 
-    emailElement = (element) => {
-        this.setState({
-            emailElement: element.event.target
-        })
-        this.updateForm(element);
-    }
-
-    passElement = (element) => {
-
-        this.setState({
-            passElement: element.event.target
-        })
-        this.updateForm(element);
-    }
 
     render() {
         return (
@@ -103,13 +91,13 @@ class Login extends Component {
                     <FormField
                         id={'email'}
                         formdata={this.state.formdata.email}
-                        change={(element) => this.emailElement(element)}
+                        change={(element) => this.updateForm(element)}
                     />
 
                     <FormField
                         id={'password'}
                         formdata={this.state.formdata.password}
-                        change={(element) => this.passElement(element)}
+                        change={(element) => this.updateForm(element)}
                     />
 
                     {this.state.formError ?
@@ -117,14 +105,15 @@ class Login extends Component {
                             Please check your data
                         </div>
                         : null}
-                    <button onClick={(event) => this.submitForm(event)}>Log in</button>
+                    <button onClick={(event) => this.submitForm(event)}>
+                        Log in
+                    </button>
+
 
                 </form>
-
             </div>
         );
     }
 }
 
-
-export default connect()(Login);
+export default connect()(withRouter(Login));

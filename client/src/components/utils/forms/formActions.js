@@ -1,50 +1,28 @@
 
-export const validate = (element, formdata=[] ) => {
+
+export const validate = (element, formdata= []) => {
     let error = [true,''];
+
+
     if(element.validation.email){
-        // eslint-disable-next-line
-       const regularExp = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-       const valid = regularExp.test(element.value);
-       const message = `${!valid ? 'Must be a valid email' : ''}`;
-       error = !valid ? [valid,message] : error;
-   }
-   
+        const valid = /\S+@\S+\.\S+/.test(element.value)
+        const message = `${!valid ? 'Must be a valid email':''}`;
+        error = !valid ? [valid,message] : error;
+    }
 
     if(element.validation.required){
         const valid = element.value.trim() !== '';
-        const message = `${!valid ? 'This field is required' : ''}`;
+        const message = `${!valid ? 'This field is required':''}`;
         error = !valid ? [valid,message] : error;
-
     }
+
     return error
-
 }
 
-export const autofilledForm = (formdata) => {
-    const newFormdata = {...formdata};
-    
-    const newEmailElement = {
-        ...newFormdata['email']
+export const update = (element, formdata, formName ) => {
+    const newFormdata = {
+        ...formdata
     }
-    const newPassElement = {
-        ...newFormdata['password']
-    }
-
-    if(validate(newEmailElement, formdata)){
-        newEmailElement.valid = true;
-    }
-    if(validate(newPassElement, formdata)){
-        newPassElement.valid = true;
-    }
-
-    newFormdata['email'] = newEmailElement;
-    newFormdata['password'] = newPassElement;
-
-    return newFormdata;
-}
-
-export const update = ( element, formdata, formName ) => {
-    const newFormdata = {...formdata};
     const newElement = {
         ...newFormdata[element.id]
     }
@@ -52,7 +30,7 @@ export const update = ( element, formdata, formName ) => {
     newElement.value = element.event.target.value;
 
     if(element.blur){
-        let validData = validate(newElement, formdata);
+        let validData = validate(newElement,formdata);
         newElement.valid = validData[0];
         newElement.validationMessage = validData[1];
     }
@@ -63,19 +41,22 @@ export const update = ( element, formdata, formName ) => {
     return newFormdata;
 }
 
-
-export const generateData = (formdata, formName) => {
+export const generateData = (formdata, formName) =>{
     let dataToSubmit = {};
+
     for(let key in formdata){
-        dataToSubmit[key] = formdata[key];
+        dataToSubmit[key] = formdata[key].value;
     }
+
     return dataToSubmit;
 }
 
-export const isFormValid = (formdata) => {
+export const isFormValid = (formdata, formName) => {
     let formIsValid = true;
+
     for(let key in formdata){
-        formIsValid = formdata[key].valid && formIsValid;
+        formIsValid = formdata[key].valid && formIsValid
     }
     return formIsValid;
+
 }
