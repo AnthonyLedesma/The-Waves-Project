@@ -4,7 +4,7 @@ import { update, generateData, isFormValid } from '../utils/forms/formActions';
 import Dialog from '@material-ui/core/Dialog';
 
 import { connect } from 'react-redux';
-import { loginUser, registerUser } from '../../actions/user_actions';
+import { registerUser } from '../../actions/user_actions';
 
 class Register extends Component {
 
