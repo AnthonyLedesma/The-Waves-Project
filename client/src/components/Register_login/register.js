@@ -21,7 +21,6 @@ class Register extends Component {
                 },
                 validation: {
                     required: true,
-                    email: true
                 },
                 valid: false,
                 touched: false,
@@ -37,7 +36,6 @@ class Register extends Component {
                 },
                 validation: {
                     required: true,
-                    email: true
                 },
                 valid: false,
                 touched: false,
@@ -68,7 +66,7 @@ class Register extends Component {
                 },
                 validation: {
                     required: true,
-                    confirm: 'passwprd'
+                    confirm: 'password'
                 },
                 valid: false,
                 touched: false,
@@ -100,8 +98,8 @@ class Register extends Component {
         let formIsValid = isFormValid(this.state.formdata, 'register')
 
         if (formIsValid) {
-            console.log(`form is valid : ${dataToSubmit}`);
-
+            console.log(`form is valid : `);
+            console.log(dataToSubmit);
         } else {
             this.setState({
                 formError: true
