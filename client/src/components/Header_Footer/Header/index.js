@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logoutUser } from '../../../actions/user_actions';
 
 class Header extends Component {
 
@@ -69,6 +70,15 @@ class Header extends Component {
 
     }
 
+    logoutHandler = () => {
+        this.props.dispatch(logoutUser()).then((response) => {
+            this.props.history.push('/');
+            if(response.payload.success){
+                this.props.history.push('/');
+            }
+        })
+    }
+
     cartLink = (item, i) => {
         const user = this.props.user.userData;
 
@@ -126,4 +136,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps)(withRouter(Header));

@@ -1,7 +1,6 @@
 import React from 'react';
 import UserLayout from '../../hoc/user';
 import MyButton from '../utils/button';
-import { userInfo } from 'os';
 
 const UserDashboard = ({user}) => {
     return (
