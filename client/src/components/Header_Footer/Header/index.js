@@ -43,41 +43,61 @@ class Header extends Component {
 
     showLinks = (type) => {
         let list = [];
-        if(this.props.user.userData){
+        if (this.props.user.userData) {
             type.forEach((item) => {
-                if(!this.props.user.userData.isAuth){
-                    if(item.public === type){
+                if (!this.props.user.userData.isAuth) {
+                    if (item.public === type) {
                         list.push(item)
                     }
                 } else {
-                    if(item.name !== 'Log In'){
+                    if (item.name !== 'Log In') {
                         list.push(item);
                     }
                 }
             });
         }
 
-        return list.map((item,i)=>{
-            return this.defaultLink(item,i);
+        return list.map((item, i) => {
+            if (item.name === 'My Cart') {
+                return this.cartLink(item, i);
+            } else {
+                return this.defaultLink(item, i);
+            }
+
         })
 
 
     }
 
-    defaultLink = (item,i) => (
-        <Link to={item.linkTo} key={i}>
-            {item.name}
-        </Link>
+    cartLink = (item, i) => {
+        const user = this.props.user.userData;
 
+        return (
+            <div className="cart_link" key={i}>
+                <span>{user.cart ? user.cart.length : 0}</span>
+                <Link to={item.linkTo}>
+                    {item.name}
+                </Link>
+            </div>
+        )
+    }
 
+    defaultLink = (item, i) => (
+        item.name === 'Log Out' ?
+            <div className="log_out_link"
+                key={i}
+                onClick={() => this.logoutHandler()}
+            >
+                {item.name}
+            </div>
+            :
+            <Link to={item.linkTo} key={i}>
+                {item.name}
+            </Link>
     )
 
 
     render() {
-
-
-
-
         return (
             <header className="bck_b_light">
                 <div className="container">
