@@ -9,6 +9,7 @@ class Home extends Component {
 
     componentDidMount(){
         this.props.dispatch(getProductsBySell());
+        this.props.dispatch(getProductsByArrival());
     }
 
     render() {
@@ -27,4 +28,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect()(Home);        
+export default connect(mapStateToProps)(Home);         
