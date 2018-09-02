@@ -8,6 +8,8 @@ import CollapseCheckbox from '../utils/collapseCheckbox';
 import CollapseRadio from '../utils/collapseRadio';
 import { frets, price } from '../utils/forms/fixed_categories';
 
+import LoadmoreCards from './loadmoreCards';
+
 class Shop extends Component {
 
     state = {
@@ -73,6 +75,7 @@ class Shop extends Component {
 
     render() {
         const products = this.props.products;
+        console.log(products);
         return (
             <div>
                 <PageTop
@@ -118,7 +121,22 @@ class Shop extends Component {
 
                         </div>
                         <div className="right">
-                            right
+                            <div className="shop_options">
+                                <div className="shop_grids clear">
+                                    grids
+                                </div>
+                            </div>
+                            <div>
+                                <LoadmoreCards
+                                    grid={this.state.grid}
+                                    limit={this.state.limit}
+                                    size={products.ToShopSize}
+                                    products={products.toShop}
+                                    loadMore={()=> console.log('load more')}
+                                
+                                />
+                            </div>
+                            
                         </div>
 
                     </div>
