@@ -73,9 +73,22 @@ class Shop extends Component {
         })
     }
 
+    loadMoreCards = () => {
+        let skip = this.state.skip + this.state.limit;
+
+        this.props.dispatch(getProductsToShop(
+            skip,
+            this.state.limit,
+            this.state.filters,
+            this.props.products.toShop
+        )).then(()=>
+        this.setState({
+            skip
+        }))
+    }
+
     render() {
         const products = this.props.products;
-        console.log(products);
         return (
             <div>
                 <PageTop
@@ -130,9 +143,9 @@ class Shop extends Component {
                                 <LoadmoreCards
                                     grid={this.state.grid}
                                     limit={this.state.limit}
-                                    size={products.ToShopSize}
+                                    size={products.toShopSize}
                                     products={products.toShop}
-                                    loadMore={()=> console.log('load more')}
+                                    loadMore={()=> this.loadMoreCards()}
                                 
                                 />
                             </div>
