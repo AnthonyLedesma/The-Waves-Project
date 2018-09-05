@@ -30,8 +30,6 @@ class ManageBrands extends Component {
     }
 
     showCategoryItems = () => {
-        console.log('show category items has run');
-        console.log(this.props.products.brands)
         if(this.props.products.brands){return this.props.products.brands.map((item,i)=>(
             <div className="category_item" key={item._id}>
                 {item.name}

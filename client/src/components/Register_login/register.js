@@ -101,7 +101,6 @@ class Register extends Component {
         if (formIsValid) {
             this.props.dispatch(registerUser(dataToSubmit))
             .then(response => {
-                console.log(response);
                 if(response.payload.success){
                     this.setState({
                         formError: false,

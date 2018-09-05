@@ -16,19 +16,15 @@ class FileUpload extends Component {
     
 
     onDrop = (files) => {
-        console.log('onDrop is triggered');
         this.setState({ uploading: true });
         let formData = new FormData();
         const config = {
             header: { 'content-type': 'multipart/form-data' }
         }
         formData.append('file', files[0]);
-        console.log('Form data is created.');
 
         axios.post('/api/users/uploadimage', formData, config)
             .then(response => {
-                console.log('response is received.');
-                console.log(response.data);
                 this.setState({
                     uploading: false,
                     uploadedFiles: [
@@ -36,7 +32,6 @@ class FileUpload extends Component {
                         response.data
                     ]
                 }, () => {
-                    console.log(this.state.uploadedFiles);
                     this.props.imagesHandler(this.state.uploadedFiles)
                 })
             })
