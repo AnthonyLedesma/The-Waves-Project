@@ -209,7 +209,7 @@ class AddProduct extends Component {
     resetFieldHandler = (event) => {
         const newFormdata = resetFields(this.state.formdata, 'products');
 
-        this.setState({formSuccess:true,formSuccess:true});
+        this.setState({formdata:newFormdata,formSuccess:true});
         setTimeout(()=>{
             this.setState({
                 formSuccess:false

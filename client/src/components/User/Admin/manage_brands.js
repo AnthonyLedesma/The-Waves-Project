@@ -3,54 +3,75 @@ import FormField from '../../utils/forms/formFields';
 import { update, generateData, isFormValid, resetFields } from '../../utils/forms/formActions';
 
 import { connect } from 'react-redux';
-import { getBrands } from '../../../actions/products_actions';
+import { getBrands, addBrand } from '../../../actions/products_actions';
 
 class ManageBrands extends Component {
 
     state = {
-        formError: false,
-        formSuccess: false,
-        formdata: {
+        formError:false,
+        formSuccess:false,
+        formdata:{
             name: {
                 element: 'input',
                 value: '',
-                config: {
-                    name: 'brand_input',
+                config:{
+                    name: 'name_input',
                     type: 'text',
-                    placeholder: 'Enter brand name'
+                    placeholder: 'Enter the brand'
                 },
-                validation: {
-                    required: true,
+                validation:{
+                    required: true
                 },
                 valid: false,
                 touched: false,
-                validationMessage: ''
-            }
+                validationMessage:''
+            },
         }
     }
-    showCategoryItems = () => (
-        this.props.products.brands ?
-            this.props.products.brands.map((item, i) => (
-                <div className="category_item" key={item._id}>
-                    {item.name}
-                </div>
-            ))
-            : null
-    )
 
-    componentDidMount() {
-        this.props.dispatch(getBrands());
+    showCategoryItems = () => {
+        console.log('show category items has run');
+        console.log(this.props.products.brands)
+        if(this.props.products.brands){return this.props.products.brands.map((item,i)=>(
+            <div className="category_item" key={item._id}>
+                {item.name}
+        </div>))} 
+         
+        }
+
+    updateForm = (element) => {
+        const newFormdata = update(element,this.state.formdata,'brands');
+        this.setState({
+            formError: false,
+            formdata: newFormdata
+        });
     }
 
-    submitForm = (event) => {
+    resetFieldsHandler = () =>{
+        const newFormData = resetFields(this.state.formdata,'brands');
+
+        this.setState({
+            formdata: newFormData,
+            formSuccess:true
+        });
+    }
+
+  
+    submitForm= (event) =>{
         event.preventDefault();
+        
+        let dataToSubmit = generateData(this.state.formdata,'brands');
+        let formIsValid = isFormValid(this.state.formdata,'brands')
+        let existingBrands = this.props.products.brands;
 
-        let dataToSubmit = generateData(this.state.formdata, 'brands');
-        let formIsValid = isFormValid(this.state.formdata, 'brandsv')
-
-        if (formIsValid) {
-            console.log('Form is valid');
-            console.log(dataToSubmit);
+        if(formIsValid){
+           this.props.dispatch(addBrand(dataToSubmit,existingBrands)).then(response=>{
+                if(response.payload.success){
+                    this.resetFieldsHandler();
+                }else{
+                    this.setState({formError:true})
+                }
+           })
         } else {
             this.setState({
                 formError: true
@@ -58,14 +79,8 @@ class ManageBrands extends Component {
         }
     }
 
-
-
-    updateForm = (element) => {
-        const newFormdata = update(element, this.state.formdata, 'brands');
-        this.setState({
-            formError: false,
-            formdata: newFormdata
-        })
+    componentDidMount(){
+        this.props.dispatch(getBrands());
     }
 
 
@@ -78,26 +93,29 @@ class ManageBrands extends Component {
                         <div className="brands_container">
                             {this.showCategoryItems()}
                         </div>
-
                     </div>
                     <div className="right">
-                        <form onSubmit={(event) => this.submitForm(event)}>
-                            <FormField
-                                id={'name'}
-                                formdata={this.state.formdata.name}
-                                change={(element) => this.updateForm(element)}
-                            />
-                            {this.state.formError ?
-                                <div className="error_label">Please check your data</div>
-                                : null}
-                            {this.state.formSuccess ?
-                                <div className="form_success">Success</div>
-                                : null}
-                            <button onClick={(event) => this.submitForm(event)}>
-                                Add brand
-                            </button>
+                        
+                    <form onSubmit={(event)=> this.submitForm(event)}>
 
-                        </form>
+                         <FormField
+                            id={'name'}
+                            formdata={this.state.formdata.name}
+                            change={(element) => this.updateForm(element)}
+                        />
+
+
+                        {this.state.formError ?
+                            <div className="error_label">
+                                Please check your data
+                            </div>
+                            : null}
+                        <button onClick={(event) => this.submitForm(event)}>
+                            Add brand
+                        </button>
+
+                    </form>
+
                     </div>
 
                 </div>
@@ -107,6 +125,9 @@ class ManageBrands extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return { products: state.products };
+    return {
+        products: state.products
+    }
 }
+
 export default connect(mapStateToProps)(ManageBrands);
