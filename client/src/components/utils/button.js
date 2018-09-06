@@ -24,6 +24,14 @@ const MyButton = (props) => {
                 </div>
             break;
 
+            case "add_to_cart_link":
+                template = <div className="add_to_cart_link"
+                onClick={()=>{
+                    console.log('add to cart');
+                }}>Add to Cart    
+                </div>
+            break;
+
             default:
                 template = '';
             break;
