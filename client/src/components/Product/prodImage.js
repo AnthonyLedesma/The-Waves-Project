@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ImageLightbox from '../utils/lightbox';
 
 class ProdImage extends Component {
 
@@ -22,11 +23,22 @@ class ProdImage extends Component {
         }
     }
 
-    handleLightbox = () => {
-
+    handleLightbox = (pos) => {
+        if (this.state.lightboxImages.length > 0){
+            this.setState({
+                lightbox:true,
+                imagePos:pos
+            })
+        }
     }
 
-    showThumbs = () => {
+    handleLightboxClose = () => {
+            this.setState({
+                lightbox:false
+            })
+    }
+
+    showThumbs = () => (
         this.state.lightboxImages.map((item,i)=>(
             i > 0 ?
                 <div
@@ -34,12 +46,10 @@ class ProdImage extends Component {
                     onClick={()=> this.handleLightbox(i)}
                     className="thumb"
                     style={{background: `url(${item})`}}
-                >
-
-                </div>
+                ></div>
             :null
         ))
-    }
+    )
 
     renderCardImage = (images) => {
         if (images.length > 0) {
@@ -50,7 +60,6 @@ class ProdImage extends Component {
     }
     
     render() {
-        console.log(this.state);
         const {detail} = this.props;
         return (
             <div className="product_image_container">
@@ -62,8 +71,20 @@ class ProdImage extends Component {
                     </div>
                 </div>
                 <div className="main_thumbs">
-                    {this.showThumbs()}
+                    {this.showThumbs(detail)}
                 </div>
+                {console.log(detail)}
+                {  
+                    this.state.lightbox ?
+                        <ImageLightbox
+                            id={detail._id}
+                            images={this.state.lightboxImages}
+                            open={this.state.lightbox}
+                            pos={this.state.imagePos}
+                            onClose={()=> this.handleLightboxClose()}
+                        />
+                    :null
+                }
             </div>
         );
     }
