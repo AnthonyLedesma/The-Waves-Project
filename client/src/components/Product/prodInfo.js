@@ -30,9 +30,7 @@ const ProdInfo = (props) => {
             <div className="cart">
                 <MyButton
                     type="add_to_cart_link"
-                    runAction={()=>{
-                        console.log('add to cart');
-                    }}
+                    runAction={()=>props.addToCart(detail._id)}
                 />
             </div>
         </div>

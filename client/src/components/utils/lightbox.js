@@ -2,29 +2,24 @@ import React, { Component } from 'react';
 import Lightbox from 'react-images';
 
 class ImageLightbox extends Component {
-    
+
     state = {
-        lightBoxIsOpen: true,
-        currentImage: this.props.imagepos,
+        lightboxIsOpen: true,
+        currentImage: this.props.pos,
         images:[]
     }
 
-    static getDerivedStateFromProps(props, state) {
-        console.log(props);
+    static getDerivedStateFromProps(props,state){
         if(props.images){
             const images = [];
             props.images.forEach(element=>{
                 images.push({src:`${element}`})
-            })
+            });
             return state = {
                 images
             }
         }
-        return false;
-    }
-
-    closeLightbox = () => {
-        this.props.onClose()
+        return false
     }
 
     gotoPrevious = () => {
@@ -38,20 +33,21 @@ class ImageLightbox extends Component {
             currentImage: this.state.currentImage +1
         })
     }
-    
+
+    closeLightbox = () => {
+        this.props.onclose();
+    }
 
     render() {
         return (
-            <div>
-                <Lightbox
-                    currentImage={this.state.currentImage}
-                    images={this.state.images}
-                    isOpen={this.state.lightBoxIsOpen}
-                    onClickPrev={()=> this.gotoPrevious()}
-                    onClickNext={()=> this.gotoNext()}
-                    onClose={()=>this.closeLightbox()}
-                />
-            </div>
+            <Lightbox
+                currentImage={this.state.currentImage}
+                images={this.state.images}
+                isOpen={this.state.lightboxIsOpen}
+                onClickPrev={()=> this.gotoPrevious()}
+                onClickNext={()=> this.gotoNext()}
+                onClose={()=>this.closeLightbox()}
+            />
         );
     }
 }
