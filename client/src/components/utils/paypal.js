@@ -31,15 +31,15 @@ class Paypal extends Component {
             client={client}
             currency={currency}
             total={total}
-            // onError={onError}
-            // onSuccess={onSuccess}
-            // onCancel={onCancel}
-            //  style={{
-            //      size:'large',
-            //      color:'blue',
-            //      shape:'rect',
-            //      label:'Checkout'
-            //  }}
+            onError={onError}
+            onSuccess={onSuccess}
+            onCancel={onCancel}
+            style={{
+              size:'large',
+              color:'black',
+              shape:'rect',
+              label:'checkout'
+             }}
         />
       </div>
     )
