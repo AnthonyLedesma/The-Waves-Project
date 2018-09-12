@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const cloudinary = require('cloudinary');
+const async = require('async')
 
 const app = express();
 const mongoose = require('mongoose');
@@ -306,31 +307,31 @@ app.get('/api/users/removeFromCart', auth, (req, res) => {
         { _id: req.user._id },
         {
             "$pull":
-            {   "cart": {"id":mongoose.Types.ObjectId(req.query._id)} }
+                { "cart": { "id": mongoose.Types.ObjectId(req.query._id) } }
         },
-        {new:true},
-        (err,doc)=>{
+        { new: true },
+        (err, doc) => {
             let cart = doc.cart;
-            let array = cart.map(item=>{
+            let array = cart.map(item => {
                 return mongoose.Types.ObjectId(item.id)
             });
 
             Product.
-            find({'_id':{ $in: array}}).
-            populate('brand').
-            populate('wood').
-            exec((err,cartDetail)=>{
-                return res.status(200).json({cartDetail,cart})
-            })
+                find({ '_id': { $in: array } }).
+                populate('brand').
+                populate('wood').
+                exec((err, cartDetail) => {
+                    return res.status(200).json({ cartDetail, cart })
+                })
         }
     )
 })
 
-app.post('/api/users/successBuy', auth, (req,res)=>{
+app.post('/api/users/successBuy', auth, (req, res) => {
     let history = [];
     let transactionData = {};
 
-    req.body.cartDetail.forEach((item)=>{
+    req.body.cartDetail.forEach((item) => {
         history.push({
             dateOfPurchase: Data.now(),
             name: item.name,
@@ -350,6 +351,26 @@ app.post('/api/users/successBuy', auth, (req,res)=>{
     }
     transactionData.data = req.body.paymentData;
     transactionData.product = history;
+
+    User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+            $push: {
+                history: history
+            }, $set: { cart: [] }
+        },
+        { new: true },
+        (err, user) => {
+            if (err) return res.json({ success: false, err });
+
+            const payment = new Payment(transactionData);
+            payment.save((err, doc) => {
+                if (err) return res.json({ success: false, err });
+
+            });
+        }
+    )
+
 })
 
 
