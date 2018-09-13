@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faShoppingBag from '@fortawesome/fontawesome-free-solid/faShoppingBag';
 
-import { addToCart } from '../../actions/user_actions';
-
 const MyButton = (props) => {
     const properties = props;
     const buttons = () => {
