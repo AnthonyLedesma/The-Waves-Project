@@ -5,8 +5,10 @@ import faPhone from '@fortawesome/fontawesome-free-solid/faPhone';
 import faClock from '@fortawesome/fontawesome-free-solid/faClock';
 import faEnvelope from '@fortawesome/fontawesome-free-solid/faEnvelope';
 
-const Footer = () => {
+const Footer = ({data}) => {
+    console.log(data.siteData)
     return (
+        data.siteData ?
         <footer className="bck_b_dark">
             <div className="container">
                 <div className="logo">
@@ -20,28 +22,28 @@ const Footer = () => {
                                 <FontAwesomeIcon icon={faCompass} className="icon" />
                                 <div className="nfo">
                                     <div>Address</div>
-                                    <div>3000 Main St.</div>
+                                    <div>{data.siteData.address}</div>
                                 </div>
                             </div>
                             <div className="tag">
                                 <FontAwesomeIcon icon={faPhone} className="icon" />
                                 <div className="nfo">
                                     <div>Phone</div>
-                                    <div>1 800 555 5555</div>
+                                    <div>{data.siteData.phone}</div>
                                 </div>
                             </div>
                             <div className="tag">
                                 <FontAwesomeIcon icon={faClock} className="icon" />
                                 <div className="nfo">
                                     <div>Hours</div>
-                                    <div>9:00 AM - 5:00PM Mon - Fri</div>
+                                    <div>{data.siteData.hours}</div>
                                 </div>
                             </div>
                             <div className="tag">
                                 <FontAwesomeIcon icon={faEnvelope} className="icon" />
                                 <div className="nfo">
                                     <div>Email</div>
-                                    <div>anthony@ledesma.tech</div>
+                                    <div>{data.siteData.email}</div>
                                 </div>
                             </div>
                         </div>
@@ -55,6 +57,7 @@ const Footer = () => {
             </div>
 
         </footer>
+        :null
     );
 };
 
