@@ -327,22 +327,24 @@ app.get('/api/users/removeFromCart', auth, (req, res) => {
     )
 })
 
-app.post('/api/users/successBuy', auth, (req, res) => {
+app.post('/api/users/successBuy',auth,(req,res)=>{
     let history = [];
     let transactionData = {};
 
-    req.body.cartDetail.forEach((item) => {
+     // user history
+    req.body.cartDetail.forEach((item)=>{
         history.push({
-            dateOfPurchase: Data.now(),
+            dateOfPurchase: Date.now(),
             name: item.name,
             brand: item.brand.name,
             id: item._id,
             price: item.price,
             quantity: item.quantity,
             paymentId: req.body.paymentData.paymentID
-
         })
     })
+
+    // PAYMENTS DASH
     transactionData.user = {
         id: req.user._id,
         name: req.user.name,
@@ -354,11 +356,7 @@ app.post('/api/users/successBuy', auth, (req, res) => {
 
     User.findOneAndUpdate(
         { _id: req.user._id },
-        {
-            $push: {
-                history: history
-            }, $set: { cart: [] }
-        },
+        { $push: { history: history }, $set: { cart: [] } },
         { new: true },
         (err, user) => {
             if (err) return res.json({ success: false, err });
@@ -367,25 +365,23 @@ app.post('/api/users/successBuy', auth, (req, res) => {
             payment.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
                 let products = [];
-                doc.product.forEach(item=>{
-                    products.push({id:item.id, quantity:item.quantity, })
+                doc.product.forEach(item => {
+                    products.push({ id: item.id, quantity: item.quantity })
                 })
 
-                async.eachOfSeries(products, (item,callback)=>{//update
+                async.eachSeries(products, (item, callback) => {//update
                     Product.update(
-                        {_id: item.id},
-                        { $inc: {
-                            "sold": item.quantity
-                        }},
-                        {new:false},
+                        { _id: item.id },
+                        { $inc: { "sold": item.quantity } },
+                        { new: false },
                         callback
                     )
-                },(err)=>{
-                    if (err) return.json({success:false,err})
+                }, (err) => {
+                    if (err) return res.json({ success: false, err })
                     res.status(200).json({
-                        success:true,
+                        success: true,
                         cart: user.cart,
-                        cartDetail:[]
+                        cartDetail: []
                     })
                 })
             });
