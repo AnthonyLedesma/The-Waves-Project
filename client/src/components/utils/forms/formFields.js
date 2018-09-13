@@ -1,7 +1,6 @@
 import React from 'react';
 
 const FormField = ({ formdata, change, id }) => {
-
     const showError = () => {
         let errorMessage = null;
         if (formdata.validation && !formdata.valid) {
@@ -20,7 +19,7 @@ const FormField = ({ formdata, change, id }) => {
             case ('input'):
                 formTemplate = (
                     <div className="formBlock">
-                        {formdata.showlabel ?
+                        {formdata.showLabel ?
                             <div className="label_inputs">
                                 {formdata.config.label}
                             </div>
@@ -39,7 +38,7 @@ const FormField = ({ formdata, change, id }) => {
             case ('select'):
                 formTemplate = (
                     <div className="formBlock">
-                        {formdata.showlabel ?
+                        {formdata.showLabel ?
                             <div className="label_inputs">
                                 {formdata.config.label}
                             </div>
@@ -65,7 +64,7 @@ const FormField = ({ formdata, change, id }) => {
             case ('textarea'):
                 formTemplate = (
                     <div className="formBlock">
-                        {formdata.showlabel ?
+                        {formdata.showLabel ?
                             <div className="label_inputs">
                                 {formdata.config.label}
                             </div>
