@@ -240,7 +240,6 @@ app.get('/api/users/auth', auth, (req, res) => {
 
 
 app.post('/api/users/register', (req, res) => {
-    console.log(req);
     const user = new User(req.body);
     user.save((err, doc) => {
         if (err) return res.json({ success: false, err });
@@ -284,7 +283,6 @@ app.get('/api/users/logout', auth, (req, res) => {
 
 app.post('/api/users/uploadimage', auth, admin, formidable(), (req, res) => {
     cloudinary.uploader.upload(req.files.file.path, (result) => {
-        console.log(result);
         res.status(200).send({
             public_id: result.public_id,
             url: result.url
@@ -416,9 +414,9 @@ app.get('/api/site/site_data', (req,res)=>{
     })
 })
 
-app.post('/api/site/site_data', (req,res)=>{
+app.post('/api/site/site_data',auth,admin, (req,res)=>{
     Site.findOneAndUpdate(
-        { name: 'site' },
+        { name: 'Site' },
         { "$set": { siteInfo: req.body}},
         { new:true },
         (err, doc)=>{

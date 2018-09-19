@@ -6,8 +6,7 @@ export default function (state = {}, action) {
         case GET_SITE_DATA:
             return { ...state, siteData: action.payload }
         case UPDATE_SITE_DATA:
-            console.log(action.payload)
-            return {...state, siteData: action.payload}
+            return {...state, siteData: action.payload.siteInfo }
         default:
             return state;
     }

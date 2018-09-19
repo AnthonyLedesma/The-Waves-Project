@@ -5,8 +5,7 @@ import faPhone from '@fortawesome/fontawesome-free-solid/faPhone';
 import faClock from '@fortawesome/fontawesome-free-solid/faClock';
 import faEnvelope from '@fortawesome/fontawesome-free-solid/faEnvelope';
 
-const Footer = ({data}) => {
-    console.log(data.siteData)
+const Footer = ({data}) => {    
     return (
         data.siteData ?
         <footer className="bck_b_dark">
@@ -22,28 +21,28 @@ const Footer = ({data}) => {
                                 <FontAwesomeIcon icon={faCompass} className="icon" />
                                 <div className="nfo">
                                     <div>Address</div>
-                                    <div>{data.siteData.address}</div>
+                                    <div>{data.siteData[0].address}</div>
                                 </div>
                             </div>
                             <div className="tag">
                                 <FontAwesomeIcon icon={faPhone} className="icon" />
                                 <div className="nfo">
                                     <div>Phone</div>
-                                    <div>{data.siteData.phone}</div>
+                                    <div>{data.siteData[0].phone}</div>
                                 </div>
                             </div>
                             <div className="tag">
                                 <FontAwesomeIcon icon={faClock} className="icon" />
                                 <div className="nfo">
                                     <div>Hours</div>
-                                    <div>{data.siteData.hours}</div>
+                                    <div>{data.siteData[0].hours}</div>
                                 </div>
                             </div>
                             <div className="tag">
                                 <FontAwesomeIcon icon={faEnvelope} className="icon" />
                                 <div className="nfo">
                                     <div>Email</div>
-                                    <div>{data.siteData.email}</div>
+                                    <div>{data.siteData[0].email}</div>
                                 </div>
                             </div>
                         </div>

@@ -92,7 +92,7 @@ class UpdateSiteInfo extends Component {
         })
     }
 
-    submitForm= (event) =>{
+    submitForm = (event) => {
         event.preventDefault();
         
         let dataToSubmit = generateData(this.state.formdata,'site_info');
@@ -119,7 +119,6 @@ class UpdateSiteInfo extends Component {
 
     componentDidMount(){
         this.props.dispatch(getSiteData()).then(()=>{
-            console.log(this.props.site.siteData[0]);
             const newFormData = populateFields(this.state.formdata,this.props.site.siteData[0]);
             this.setState({
                 formdata: newFormData

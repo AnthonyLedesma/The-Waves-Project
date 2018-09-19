@@ -15,7 +15,7 @@ export function getSiteData(){
 }
 
 export function updateSiteData(dataToSubmit){
-    const request = axios.get(`${SITE_SERVER}/site_data`, dataToSubmit)
+    const request = axios.post(`${SITE_SERVER}/site_data`, dataToSubmit)
     .then(response => response.data)
 
     return {
