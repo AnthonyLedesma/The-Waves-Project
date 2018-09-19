@@ -16,7 +16,7 @@ firebase.json
 /coverage
 
 # production
-/build
+# /build (removed this field to deploy to heroku)
 
 # misc
 .DS_Store
