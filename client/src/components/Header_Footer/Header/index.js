@@ -47,7 +47,7 @@ class Header extends Component {
         if (this.props.user.userData) {
             type.forEach((item) => {
                 if (!this.props.user.userData.isAuth) {
-                    if (item.public === type) {
+                    if (item.public === true) {
                         list.push(item)
                     }
                 } else {
