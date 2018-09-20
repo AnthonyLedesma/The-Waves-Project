@@ -3,6 +3,7 @@ const formidable = require('express-formidable');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+
 const cloudinary = require('cloudinary');
 const async = require('async')
 
@@ -38,6 +39,28 @@ const { Site } = require('./models/site');
 //Middleware
 const { auth } = require('./middleware/auth');
 const { admin } = require('./middleware/admin');
+
+
+//UTILS
+const { sendEmail } = require('./Utils/mail/index');
+
+
+// var mail = {
+//     from: "Waves <anthony@ledesma.tech>",
+//     to: "Waves <anthony@ledesma.tech>",
+//     subject: "Send test email",
+//     text: "Testing Waves email",
+//     html: "<b>Hello! This mailer works!</b>"
+// }
+
+// smtpTransport.sendMail(mail, function (error, response) {
+//     if (error) {
+//         console.log(error);
+//     } else {
+//         console.log('email sent')
+//     }
+//     smtpTransport.close();
+// })
 
 //============================================
 //                  PRODUCT
@@ -245,7 +268,8 @@ app.post('/api/users/register', (req, res) => {
     const user = new User(req.body);
     user.save((err, doc) => {
         if (err) return res.json({ success: false, err });
-        res.status(200).json({
+        sendEmail(doc.email, doc.name,null,'welcome');
+        return res.status(200).json({
             success: true,
             userdata: doc
         })
@@ -328,24 +352,24 @@ app.get('/api/users/removeFromCart', auth, (req, res) => {
     )
 })
 
-app.post('/api/users/update_profile', auth,(req,res)=>{
+app.post('/api/users/update_profile', auth, (req, res) => {
     User.findOneAndUpdate(
-        {_id: req.user._id},
+        { _id: req.user._id },
         { "$set": req.body },
-        {new:true},
-        (err,doc)=>{
-            if(err) return res.json({success:false,err})
+        { new: true },
+        (err, doc) => {
+            if (err) return res.json({ success: false, err })
 
         }
     )
 })
 
-app.post('/api/users/successBuy',auth,(req,res)=>{
+app.post('/api/users/successBuy', auth, (req, res) => {
     let history = [];
     let transactionData = {};
 
-     // user history
-    req.body.cartDetail.forEach((item)=>{
+    // user history
+    req.body.cartDetail.forEach((item) => {
         history.push({
             dateOfPurchase: Date.now(),
             name: item.name,
@@ -409,20 +433,20 @@ app.post('/api/users/successBuy',auth,(req,res)=>{
 //                  site
 //============================================
 
-app.get('/api/site/site_data', (req,res)=>{
-    Site.find({},(err,site)=>{
-        if(err) return res.status(400).send(err);
+app.get('/api/site/site_data', (req, res) => {
+    Site.find({}, (err, site) => {
+        if (err) return res.status(400).send(err);
         res.status(200).send(site[0].siteInfo)
     })
 })
 
-app.post('/api/site/site_data',auth,admin, (req,res)=>{
+app.post('/api/site/site_data', auth, admin, (req, res) => {
     Site.findOneAndUpdate(
         { name: 'Site' },
-        { "$set": { siteInfo: req.body}},
-        { new:true },
-        (err, doc)=>{
-            if(err) return res.json({success:false,err});
+        { "$set": { siteInfo: req.body } },
+        { new: true },
+        (err, doc) => {
+            if (err) return res.json({ success: false, err });
             return res.status(200).send({
                 success: true,
                 siteInfo: doc.siteInfo
@@ -433,10 +457,10 @@ app.post('/api/site/site_data',auth,admin, (req,res)=>{
 
 //DEFAULT
 
-if(process.env.NODE_ENV === "production"){
+if (process.env.NODE_ENV === "production") {
     const path = require('path');
-    app.get('/*', (req,res)=>{
-        res.sendFile(path.resolve(__dirname,'../client','build','index.html'))
+    app.get('/*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'))
     })
 }
 
