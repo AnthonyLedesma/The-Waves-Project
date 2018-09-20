@@ -26,7 +26,6 @@ const RegisterLogin = () => {
                     </div>
                 </div>
             </div>
-            REGISTER
         </div>
     );
 };

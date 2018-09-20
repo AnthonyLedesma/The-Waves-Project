@@ -12,14 +12,13 @@ const FormField = ({ formdata, change, id }) => {
         }
         return errorMessage;
     }
-
     const renderTemplate = () => {
         let formTemplate = null;
         switch (formdata.element) {
             case ('input'):
                 formTemplate = (
                     <div className="formBlock">
-                        {formdata.showLabel ?
+                        {formdata.showlabel ?
                             <div className="label_inputs">
                                 {formdata.config.label}
                             </div>
@@ -38,7 +37,7 @@ const FormField = ({ formdata, change, id }) => {
             case ('select'):
                 formTemplate = (
                     <div className="formBlock">
-                        {formdata.showLabel ?
+                        {formdata.showlabel ?
                             <div className="label_inputs">
                                 {formdata.config.label}
                             </div>
@@ -64,7 +63,7 @@ const FormField = ({ formdata, change, id }) => {
             case ('textarea'):
                 formTemplate = (
                     <div className="formBlock">
-                        {formdata.showLabel ?
+                        {formdata.showlabel ?
                             <div className="label_inputs">
                                 {formdata.config.label}
                             </div>
