@@ -1,4 +1,3 @@
-#The Waves Project
 # View the demo here: [The Waves Project](https://fathomless-waters-50255.herokuapp.com)
 
 
