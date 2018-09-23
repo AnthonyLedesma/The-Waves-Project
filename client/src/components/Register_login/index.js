@@ -1,10 +1,15 @@
 import React from 'react';
 import MyButton from '../utils/button';
 import Login from './login';
+import { Helmet } from "react-helmet";
 
 const RegisterLogin = () => {
     return (
         <div className="page_wrapper">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Register or Login - Waves - Anthony Ledesma</title>
+            </Helmet>
             <div className="container">
                 <div className="register_login_container">
                     <div className="left">
@@ -15,14 +20,14 @@ const RegisterLogin = () => {
                             title="Create an account"
                             linkTo="/register"
                             addStyles={{
-                                margin:'10px 0 0 0'
+                                margin: '10px 0 0 0'
                             }}
                         />
                     </div>
                     <div className="right">
                         <h2>Registered Customers</h2>
                         <p>If you have an account please log in</p>
-                        <Login/>
+                        <Login />
                     </div>
                 </div>
             </div>

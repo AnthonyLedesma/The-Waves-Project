@@ -7,6 +7,7 @@ import FileUpload from '../../utils/forms/fileupload';
 
 import { connect } from 'react-redux';
 import { getBrands, getWoods, addProduct, clearProduct } from '../../../actions/products_actions';
+import { Helmet } from "react-helmet";
 
 class AddProduct extends Component {
 
@@ -176,20 +177,20 @@ class AddProduct extends Component {
                 showlabel: true
             },
             images: {
-                value:[],
-                validation:{
-                    required:false
+                value: [],
+                validation: {
+                    required: false
                 },
-                valid:true,
-                touched:false,
-                validationMessage:'',
-                showlabel:false
+                valid: true,
+                touched: false,
+                validationMessage: '',
+                showlabel: false
             }
         }
     }
 
     updateFields = (newFormdata) => {
-        this.setState({formdata:newFormdata})
+        this.setState({ formdata: newFormdata })
     }
 
     componentDidMount() {
@@ -209,14 +210,14 @@ class AddProduct extends Component {
     resetFieldHandler = (event) => {
         const newFormdata = resetFields(this.state.formdata, 'products');
 
-        this.setState({formdata:newFormdata,formSuccess:true});
-        setTimeout(()=>{
+        this.setState({ formdata: newFormdata, formSuccess: true });
+        setTimeout(() => {
             this.setState({
-                formSuccess:false
-            },()=>{
+                formSuccess: false
+            }, () => {
                 this.props.dispatch(clearProduct());
             })
-        },3000)
+        }, 3000)
     }
 
     submitForm = (event) => {
@@ -226,11 +227,11 @@ class AddProduct extends Component {
         let formIsValid = isFormValid(this.state.formdata, 'products')
 
         if (formIsValid) {
-            this.props.dispatch(addProduct(dataToSubmit)).then(()=>{
-                if( this.props.products.addProduct.success){
+            this.props.dispatch(addProduct(dataToSubmit)).then(() => {
+                if (this.props.products.addProduct.success) {
                     this.resetFieldHandler();
                 } else {
-                    this.setState({formError:true});
+                    this.setState({ formError: true });
                 }
             })
         } else {
@@ -265,13 +266,17 @@ class AddProduct extends Component {
     render() {
         return (
             <UserLayout>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Add Product - Waves - Anthony Ledesma</title>
+                </Helmet>
                 <div>
                     <h1>Add product</h1>
 
                     <form onSubmit={(event) => this.submitForm(event)}>
 
                         <FileUpload
-                            imagesHandler={(images)=> this.imagesHandler(images)}
+                            imagesHandler={(images) => this.imagesHandler(images)}
                             reset={this.state.formSuccess}
                         />
 

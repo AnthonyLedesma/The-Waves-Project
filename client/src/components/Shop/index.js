@@ -13,6 +13,7 @@ import LoadmoreCards from './loadmoreCards';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faBars from '@fortawesome/fontawesome-free-solid/faBars';
 import faTh from '@fortawesome/fontawesome-free-solid/faTh';
+import { Helmet } from "react-helmet";
 
 class Shop extends Component {
 
@@ -104,6 +105,10 @@ class Shop extends Component {
                 <PageTop
                     title="Browse Products"
                 />
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Browse Products - Waves - Anthony Ledesma</title>
+                </Helmet>
 
                 <div className="container">
                     <div className="shop_wrapper">

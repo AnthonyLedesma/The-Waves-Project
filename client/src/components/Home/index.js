@@ -5,6 +5,7 @@ import CardBlock from '../utils/card_block';
 
 import { connect } from 'react-redux';
 import { getProductsBySell, getProductsByArrival } from '../../actions/products_actions';
+import { Helmet } from "react-helmet";
 
 class Home extends Component {
 
@@ -16,6 +17,10 @@ class Home extends Component {
     render() {
         return (
             <div>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Waves Project - By Anthony Ledesma</title>
+                </Helmet>
                 <HomeSlider />
                 <CardBlock
                     list={this.props.products.bySell}

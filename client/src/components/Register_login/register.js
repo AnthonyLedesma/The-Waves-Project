@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/user_actions';
+import { Helmet } from "react-helmet";
 
 class Register extends Component {
 
@@ -100,25 +101,25 @@ class Register extends Component {
 
         if (formIsValid) {
             this.props.dispatch(registerUser(dataToSubmit))
-            .then(response => {
-                if(response.payload.success){
+                .then(response => {
+                    if (response.payload.success) {
+                        this.setState({
+                            formError: false,
+                            formSuccess: true,
+                        })
+                        setTimeout(() => {
+                            this.props.history.push('/register_login');
+                        }, 3000)
+                    } else {
+                        this.setState({
+                            formError: true
+                        })
+                    }
+                }).catch(e => {
                     this.setState({
-                        formError: false,
-                        formSuccess: true,
+                        formError: true
                     })
-                    setTimeout(()=>{
-                        this.props.history.push('/register_login');
-                    },3000)
-                } else {
-                    this.setState({
-                        formError:true
-                    })
-                }
-            }).catch(e => {
-                this.setState({
-                    formError:true
                 })
-            })
         } else {
             this.setState({
                 formError: true
@@ -139,6 +140,10 @@ class Register extends Component {
     render() {
         return (
             <div className="page_wrapper">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>User Registration - Waves - Anthony Ledesma</title>
+                </Helmet>
                 <div className="container">
                     <div className="register_login_container">
                         <div className="left">
@@ -189,8 +194,8 @@ class Register extends Component {
                                         Please check your data
                                     </div>
                                     : null}
-                                    <button onClick={(event)=>this.submitForm(event)}>
-                                        Create an account
+                                <button onClick={(event) => this.submitForm(event)}>
+                                    Create an account
                                     </button>
                             </form>
 
@@ -201,9 +206,9 @@ class Register extends Component {
                 </div>
                 <Dialog open={this.state.formSuccess}>
                     <div className="dialog_alert">
-                         <div>Congratulations!</div>
-                         <div>
-                             You will be redirected to the LOGIN in a couple seconds...
+                        <div>Congratulations!</div>
+                        <div>
+                            You will be redirected to the LOGIN in a couple seconds...
                          </div>
                     </div>
                 </Dialog>

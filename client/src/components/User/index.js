@@ -2,10 +2,15 @@ import React from 'react';
 import UserLayout from '../../hoc/user';
 import MyButton from '../utils/button';
 import UserHistoryBlock from '../utils/User/history_block';
+import {Helmet} from "react-helmet";
 
 const UserDashboard = ({ user }) => {
     return (
         <UserLayout>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>User Dashboard - Waves - Anthony Ledesma</title>
+            </Helmet>
             <div>
 
                 <div className="user_nfo_panel">
@@ -29,10 +34,10 @@ const UserDashboard = ({ user }) => {
                                 <UserHistoryBlock
                                     products={user.userData.history}
                                 />
-                        </div>
+                            </div>
 
                         </div>
-                    : null
+                        : null
                 }
 
 
